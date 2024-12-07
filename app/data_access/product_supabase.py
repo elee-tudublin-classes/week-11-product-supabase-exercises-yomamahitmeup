@@ -16,31 +16,43 @@ supabase: Client = create_client(db_url, db_key)
 # get all products
 def dataGetProducts():
     response = (supabase.table("product")
-                .select("*")
+                .select("*, category(name)")
                 .order("title", desc=False)
                 .execute()
     )
-
+    #print(response.data[0])
     return response.data
+
+    #get data by id for the category menu 
+def dataGetProductByCat(id: int) :
+    response = (supabase.table("product")
+                .select("*, category(name)")
+                .eq("category_id", id)
+                .order("title", desc=False)
+                .execute()
+    )
+    #print(response.data[0])
+    return response.data
+
 
 # get product by id
 def dataGetProduct(id):
     # select * from product where id = id 
     response = (
         supabase.table("product")
-        .select("*")
+        .select("*, category(name)")
         .eq("id", id)
         .execute()
     )
     return response.data[0]
 
 # update product
-def dataUpdateProduct(product: Product) :
+def dataUpdateProduct(product: Product):
     # pass params individually
     #response = supabase.table("product").upsert({"id": product.id, "category_id": product.category_id, "title": product.title, "thumbnail": product.thumbnail, "stock": product.stock, "price": product.price}).execute()
     response = (
         supabase.table("product")
-        .upsert(product.dict()) # convert product object to dict - required by Supabase
+        .upsert(product.model_dump()) # convert product object to dict - required by Supabase
         .execute()
     )
     # result is 1st item in the list
@@ -50,12 +62,14 @@ def dataUpdateProduct(product: Product) :
 def dataAddProduct(product: Product) :
     response = (
         supabase.table("product")
-        .insert(product.dict()) # convert product object to dict - required by Supabase
+        .insert(product.model_dump()) # convert product object to dict - required by Supabase
         .execute()
     )
-    # result is 1st item in the list
-    return response.data[0]
-
+    if (response.data) :
+        return dataGetProduct(response.data[0]['id'])  #condition added to return single product by id and associated category 
+    
+    return False
+  
 # get all categories
 def dataGetCategories():
     response = (supabase.table("category")

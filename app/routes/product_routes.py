@@ -50,3 +50,10 @@ def postProduct(request: Request, productData: Annotated[Product, Form()]) :
 def delProduct(request: Request, id: int):
     deleteProduct(id)
     return templates.TemplateResponse("product/partials/product_list.html", {"request": request, "products": getAllProducts()})
+
+
+@router.get("/bycat/{id}")
+def delProduct(request: Request, id: int):
+    products = getProductByCat(id)
+    return templates.TemplateResponse("product/partials/product_list.html", {"request": request, "products": products})
+
