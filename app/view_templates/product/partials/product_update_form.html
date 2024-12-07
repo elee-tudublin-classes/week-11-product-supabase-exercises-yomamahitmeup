@@ -1,13 +1,25 @@
 <tr hx-target="this" hx-swap="outerHTML">
-        <td>
-            <input type="text" class="form-control" id="thumbnail" name="thumbnail" value="{{ product.thumbnail }}" required>
-        </td>
-        <td><input type="hidden" class="form-control" id="id" name="id" value="{{ product.id }}"></td>
-        <td><input type="number" class="form-control" id="categoey_id" name="category_id" value="{{ product.category_id }}" required></td>
-        <td><input type="text" class="form-control" id="title" name="title" value="{{ product.title }}" required></td>
-        <td><input type="text" class="form-control" id="description" name="description" value="{{ product.description }}" required></td>
-        <td><input type="number" class="form-control" id="stock" name="stock" value="{{ product.stock }}" required></td>
-        <td><input type="number" min="0.01" step="0.01" class="form-control" id="price" name="price" value="{{ product.price }}" required></td>
-        <td><button class="btn btn-primary" hx-put="/product/" hx-include="closest tr">Update</button></td>
-</tr>
+    <td>
+        <input type="text" class="form-control" id="thumbnail" name="thumbnail" value="{{ product.thumbnail }}"
+            required>
+    </td>
+    <td><input type="hidden" class="form-control" id="id" name="id" value="{{ product.id }}"></td>
+    <td>
+        <select class="ms-2 me-auto" hx-post="/product/" hx-target="#productList" hx-swap="beforeend">
+            <!-- select class from bootstrap to add a dropdow category list, loop from categories, add option value category.id, category.name.-->
+            <select class="form-select" id="category_id" name="category_id">
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
 
+    </td>
+    <td><input type="text" class="form-control" id="title" name="title" value="{{ product.title }}" required></td>
+    <td><input type="text" class="form-control" id="description" name="description" value="{{ product.description }}"
+            required></td>
+    <td><input type="number" class="form-control" id="stock" name="stock" value="{{ product.stock }}" required></td>
+    <td><input type="number" min="0.01" step="0.01" class="form-control" id="price" name="price"
+            value="{{ product.price }}" required></td>
+    <td><button class="btn btn-primary" hx-put="/product/" hx-include="closest tr">Update</button></td>
+</tr>
+</div>

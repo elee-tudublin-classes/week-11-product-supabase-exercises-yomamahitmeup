@@ -6,7 +6,7 @@ from typing import Optional
 
 class Product(BaseModel):
     _id: int # Pydantic excludes variables which begin with an underscore. 
-    category_id: int
+    category_id: int   #had to change it to str after integrating the category drop down menu !
     title: str
     description: str
     price: float
